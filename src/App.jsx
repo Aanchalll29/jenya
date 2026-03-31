@@ -3,24 +3,26 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import Login from './pages/Login.jsx'
-import ProductList from './pages/productList.jsx'
-import CrudPage from './pages/Crudpage.jsx'
-import ProtectedRoute from './components/proroute'
+import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import Login from './pages/Login'
+import Products from './pages/Products'
+import Todos from './pages/Todo'
+import ProtectedRoute from './routes/ProtectedRoute'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path='/login' element={< Login />}/>
-      <Route path='/product' element={<ProtectedRoute>< ProductList /> </ ProtectedRoute>} />
-      <Route path='/crud' element={<ProtectedRoute><CrudPage /> </ ProtectedRoute>}/>
-      <Route path='*' element={< Navigate to = '/login' />}/>
+   <BrowserRouter>
+      <Routes>
+         <Route path="/" element={<Navigate to="/login" />} />
+        <Route path="/login" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/products" element={<Products />} />
+          <Route path="/todos" element={<Todos />} />
+        </Route>
       </Routes>
-      </BrowserRouter>
+    </BrowserRouter>
   );
 }
 

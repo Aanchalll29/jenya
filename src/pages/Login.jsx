@@ -1,62 +1,75 @@
-// import React from 'react'
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../feature/authSlice';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Alert, CircularProgress, Box, Typography } from '@mui/material';
-
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { TextField, Button, Card, CardContent, Typography, Box,} from "@mui/material";
 
 const Login = () => {
+  const [form, setForm] = useState({ username: "", password: "" });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.auth);
-  const [form, setForm] = useState({ username: '', password: '' });
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleLogin = async () => {
+  const username = "kminchelle";
+  const password = "0lelplR";
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try{
-      await dispatch(loginUser(form)).unwrap();
-      navigate('/products');
-    }catch (err){
-      console.log(err);
-    }
-  
-  };
+  if (username === "kminchelle" && password === "0lelplR") {
+    localStorage.setItem("token", "dummy_token_123");
+
+    console.log("Login Success");
+
+    navigate("/products");
+  } else {
+    console.log("Invalid credentials");
+  }
+};
 
   return (
-    <Box sx={{ maxWidth: 400, margin: '100px auto', padding: 3 }}>
-      <Typography variant="h5" mb={2}>Login</Typography>
-      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-      <form onSubmit={handleSubmit}>
-      <TextField
-        label="Username"
-        name="username"
-        fullWidth
-        margin="normal"
-        onChange={handleChange}
-      />
-      <TextField
-        label="Password"
-        name="password"
-        type="password"
-        fullWidth
-        margin="normal"
-        onChange={handleChange}
-      />
-      <Button
-        variant="contained"
-        fullWidth
-        sx={{ mt: 2 }}
-        onClick={handleSubmit}
-        disabled={loading}
-      >
-        {loading ? <CircularProgress size={24} /> : 'login'}
-      </Button>
-      </form>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#f5f5f5",
+      }}
+    >
+      <Card sx={{ width: 350, padding: 2 }}>
+        <CardContent>
+          <Typography variant="h5" gutterBottom>
+            Login
+          </Typography>
+
+          <TextField
+            fullWidth
+            label="Username"
+            margin="normal"
+            onChange={(e) =>
+              setForm({ ...form, username: e.target.value })
+            }
+          />
+
+          <TextField
+            fullWidth
+            type="password"
+            label="Password"
+            margin="normal"
+            onChange={(e) =>
+              setForm({ ...form, password: e.target.value })
+            }
+          />
+
+          <Button
+            fullWidth
+            variant="contained"
+            sx={{ marginTop: 2 }}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+        </CardContent>
+      </Card>
     </Box>
   );
 };
